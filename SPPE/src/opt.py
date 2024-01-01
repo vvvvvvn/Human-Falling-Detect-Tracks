@@ -105,7 +105,8 @@ opt = parser.parse_args()"""
 
 
 class opt:
-    nClasses = 33
+    # nClasses = 33
+    nClasses = 17
     inputResH = 384
     inputResW = 320
     outputResH = 96

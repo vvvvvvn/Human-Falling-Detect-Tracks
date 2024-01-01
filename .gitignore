@@ -1,0 +1,9 @@
+UR-DATA/ADL_sequences/*
+UR-DATA/Fall_sequences/*
+Models/sppe/*
+Models/TSSTG/*
+Models/yolo-tiny-onecls/*
+Models-OLD/sppe/*
+Models-OLD/TSSTG/*
+Models-OLD/yolo-tiny-onecls/*
+env/
