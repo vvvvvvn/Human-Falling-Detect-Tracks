@@ -1,50 +1,50 @@
-# Create dataset
+<h1> Human Falling Detection and Tracking </h1>
 
-## UR-Dataset Prepared
+Using Tiny-YOLO oneclass to detect each person in the frame and use 
+[AlphaPose](https://github.com/MVIG-SJTU/AlphaPose) to get skeleton-pose and then use
+[ST-GCN](https://github.com/yysijie/st-gcn) model to predict action from every 30 frames 
+of each person tracks.
 
-執行 `download_data.py` 下載 UR 資料集
+Which now support 7 actions: Standing, Walking, Sitting, Lying Down, Stand up, Sit down, Fall Down.
 
-- 資料集架構 (部份)
+<div align="center">
+    <img src="sample1.gif" width="416">
+</div>
 
-```sh
-├── UR-DATA/
-│   ├── ADL_sequences/
-│       ├── 31/
-│       |   ├── adl-31-cam0-rgb/
-│   ├── Fall_sequences/
-│       ├── 1/
-│       |   ├── fall-01-cam0-rgb/
-│   ├── urfall-cam0-adls.csv
-│   ├── urfall-cam0-falls.csv
-│   ├── urfall-cam0-adls-OUR.csv   # 我們上次標記的
+## Prerequisites
+
+- Python > 3.6
+- Pytorch > 1.3.1
+
+Original test run on: i7-8750H CPU @ 2.20GHz x12, GeForce RTX 2070 8GB, CUDA 10.2
+
+## Data
+
+This project has trained a new Tiny-YOLO oneclass model to detect only person objects and to reducing 
+model size. Train with rotation augmented [COCO](http://cocodataset.org/#home) person keypoints dataset 
+for more robust person detection in a variant of angle pose.
+
+For actions recognition used data from [Le2i](http://le2i.cnrs.fr/Fall-detection-Dataset?lang=fr)
+Fall detection Dataset (Coffee room, Home) extract skeleton-pose by AlphaPose and labeled each action 
+frames by hand for training ST-GCN model.
+
+## Pre-Trained Models
+
+- Tiny-YOLO oneclass - [.pth](https://drive.google.com/file/d/1obEbWBSm9bXeg10FriJ7R2cGLRsg-AfP/view?usp=sharing),
+[.cfg](https://drive.google.com/file/d/19sPzBZjAjuJQ3emRteHybm2SG25w9Wn5/view?usp=sharing)
+- SPPE FastPose (AlphaPose) - [resnet101](https://drive.google.com/file/d/1N2MgE1Esq6CKYA6FyZVKpPwHRyOCrzA0/view?usp=sharing),
+[resnet50](https://drive.google.com/file/d/1IPfCDRwCmQDnQy94nT1V-_NVtTEi4VmU/view?usp=sharing)
+- ST-GCN action recognition - [tsstg](https://drive.google.com/file/d/1mQQ4JHe58ylKbBqTjuKzpwN2nwKOWJ9u/view?usp=sharing)
+
+## Basic Use
+
+1. Download all pre-trained models into ./Models folder.
+2. Run main.py
+```
+    python main.py ${video file or camera source}
 ```
 
-## example: 讀取 Fall_sequences 資料集
+## Reference
 
-1. 讀取 `UR-DATA/Fall_sequences` 執行 create_dataset_2
-
-- command:
-
-```bash=
-python Data/create_dataset_2.py
-```
-
-- 若遇到以下錯誤，需 export PYTHONPATH
-
-```
-ModuleNotFoundError: No module named 'DetectorLoader'
-```
-
-- 解法： example
-
-```bash=
-export PYTHONPATH="/home/penguin/Documents/vivian/Human-Falling-Detect-Tracks"
-```
-
-2. 執行 create_dataset_3
-
-- command:
-
-```bash=
-python Data/create_dataset_3.py
-```
+- AlphaPose : https://github.com/Amanbhandula/AlphaPose
+- ST-GCN : https://github.com/yysijie/st-gcn
